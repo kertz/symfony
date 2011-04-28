@@ -81,6 +81,7 @@ class DateType extends AbstractType
 
         $builder
             ->setAttribute('formatter', $formatter)
+            ->setAttribute('date_pattern', $options['pattern'])
             ->setAttribute('widget', $options['widget']);
     }
 
@@ -90,15 +91,18 @@ class DateType extends AbstractType
 
         if ($view->hasChildren()) {
 
-            $pattern = $form->getAttribute('formatter')->getPattern();
+            //if custom date_pattern is set then use it or else use the the formatter or the default pattern
+            if (!$pattern = $form->getAttribute('date_pattern')) {
+                $pattern = $form->getAttribute('formatter')->getPattern();
 
-            // set right order with respect to locale (e.g.: de_DE=dd.MM.yy; en_US=M/d/yy)
-            // lookup various formats at http://userguide.icu-project.org/formatparse/datetime
-            if (preg_match('/^([yMd]+).+([yMd]+).+([yMd]+)$/', $pattern)) {
-                $pattern = preg_replace(array('/y+/', '/M+/', '/d+/'), array('{{ year }}', '{{ month }}', '{{ day }}'), $pattern);
-            } else {
-                // default fallback
-                $pattern = '{{ year }}-{{ month }}-{{ day }}';
+                // set right order with respect to locale (e.g.: de_DE=dd.MM.yy; en_US=M/d/yy)
+                // lookup various formats at http://userguide.icu-project.org/formatparse/datetime
+                if (preg_match('/^([yMd]+).+([yMd]+).+([yMd]+)$/', $pattern)) {
+                    $pattern = preg_replace(array('/y+/', '/M+/', '/d+/'), array('{{ year }}', '{{ month }}', '{{ day }}'), $pattern);
+                } else {
+                    // default fallback
+                    $pattern = '{{ year }}-{{ month }}-{{ day }}';
+                }
             }
 
             $view->set('date_pattern', $pattern);
