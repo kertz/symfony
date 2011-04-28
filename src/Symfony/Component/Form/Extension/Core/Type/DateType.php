@@ -38,7 +38,7 @@ class DateType extends AbstractType
         );
 
         if ($options['widget'] === 'text') {
-            $builder->appendClientTransformer(new DateTimeToLocalizedStringTransformer($options['data_timezone'], $options['user_timezone'], $options['format'], \IntlDateFormatter::NONE));
+            $builder->appendClientTransformer(new DateTimeToLocalizedStringTransformer($options['data_timezone'], $options['user_timezone'], $options['format'], \IntlDateFormatter::NONE, \IntlDateFormatter::GREGORIAN, $formatter->getPattern()));
         } elseif ($options['widget'] == 'choice') {
             // Only pass a subset of the options to children
             $yearOptions = array(
@@ -91,6 +91,7 @@ class DateType extends AbstractType
         $view->set('widget', $form->getAttribute('widget'));
 
         if ($view->hasChildren()) {
+
             $pattern = $form->getAttribute('formatter')->getPattern();
 
             // set right order with respect to locale (e.g.: de_DE=dd.MM.yy; en_US=M/d/yy)

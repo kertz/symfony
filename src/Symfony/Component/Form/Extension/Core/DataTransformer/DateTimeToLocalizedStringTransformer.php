@@ -29,10 +29,11 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
 {
     private $dateFormat;
-
     private $timeFormat;
+    private $pattern;
+    private $calendar;
 
-    public function __construct($inputTimezone = null, $outputTimezone = null, $dateFormat = null, $timeFormat = null)
+    public function __construct($inputTimezone = null, $outputTimezone = null, $dateFormat = null, $timeFormat = null, $calendar = null, $pattern = null)
     {
         parent::__construct($inputTimezone, $outputTimezone);
 
@@ -54,6 +55,8 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
 
         $this->dateFormat = $dateFormat;
         $this->timeFormat = $timeFormat;
+        $this->calendar = $calendar;
+        $this->pattern = $pattern;
     }
 
     /**
@@ -132,7 +135,9 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         $dateFormat = $this->dateFormat;
         $timeFormat = $this->timeFormat;
         $timezone = $this->outputTimezone;
+        $calendar = $this->calendar;
+        $pattern = $this->pattern;
 
-        return new \IntlDateFormatter(\Locale::getDefault(), $dateFormat, $timeFormat, $timezone);
+        return new \IntlDateFormatter(\Locale::getDefault(), $dateFormat, $timeFormat, $timezone, $calendar ,$pattern);
     }
 }
