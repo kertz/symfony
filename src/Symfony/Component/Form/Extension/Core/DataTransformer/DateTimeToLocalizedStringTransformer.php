@@ -138,6 +138,6 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         $calendar = $this->calendar;
         $pattern = $this->pattern;
 
-        return new \IntlDateFormatter(\Locale::getDefault(), $dateFormat, $timeFormat, $timezone, $calendar ,$pattern);
+        return new \IntlDateFormatter(\Locale::getDefault(), $dateFormat, $timeFormat, $timezone, $calendar, $pattern);
     }
 }
