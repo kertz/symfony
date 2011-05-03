@@ -91,7 +91,6 @@ class DateType extends AbstractType
         $view->set('widget', $form->getAttribute('widget'));
 
         if ($view->hasChildren()) {
-
             $pattern = $form->getAttribute('formatter')->getPattern();
 
             // set right order with respect to locale (e.g.: de_DE=dd.MM.yy; en_US=M/d/yy)
