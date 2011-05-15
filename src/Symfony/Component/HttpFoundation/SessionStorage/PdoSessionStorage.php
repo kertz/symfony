@@ -247,7 +247,12 @@ class PdoSessionStorage extends NativeSessionStorage
         $dbIdCol   = $this->dbOptions['db_id_col'];
         $dbTimeCol = $this->dbOptions['db_time_col'];
 
-        $sql = "INSERT INTO $dbTable ($dbIdCol, $dbDataCol, $dbTimeCol) VALUES (:id, :data, :time)";
+        //mysql specific code to prevent duplicate sess_id due to race condition
+
+        $sql = $this->db->getAttribute(\PDO::ATTR_DRIVER_NAME)
+            ? "INSERT INTO $dbTable ($dbIdCol, $dbDataCol, $dbTimeCol) VALUES (:id, :data, :time) "
+              . "ON DUPLICATE KEY UPDATE $dbDataCol = VALUES($dbDataCol), $dbTimeCol = CASE WHEN $dbTimeCol = :time THEN (VALUES($dbTimeCol) + 1) ELSE VALUES($dbTimeCol) END"
+            : "INSERT INTO $dbTable ($dbIdCol, $dbDataCol, $dbTimeCol) VALUES (:id, :data, :time)";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id, \PDO::PARAM_STR);
