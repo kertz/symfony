@@ -14,6 +14,7 @@ namespace Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Exception\CreationException;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\PaddedChoiceList;
 use Symfony\Component\Form\Extension\Core\ChoiceList\MonthChoiceList;
@@ -46,7 +47,7 @@ class DateType extends AbstractType
                 $format = $defaultOptions['format'];
                 $pattern = $options['format'];
             } else {
-                throw new FormException('The "format" option must be one of the IntlDateFormatter constants (FULL, LONG, MEDIUM, SHORT) or a string representing a custom pattern');
+                throw new CreationException('The "format" option must be one of the IntlDateFormatter constants (FULL, LONG, MEDIUM, SHORT) or a string representing a custom pattern');
             }
         }
         
