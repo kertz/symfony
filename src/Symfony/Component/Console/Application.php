@@ -949,7 +949,7 @@ class Application
         }
 
         $descriptorspec = array(1 => array('pipe', 'w'), 2 => array('pipe', 'w'));
-        $process = proc_open('stty -a | grep columns', $descriptorspec, $pipes, null, null, array('suppress_errors' => true));
+        $process = @proc_open('stty -a | grep columns', $descriptorspec, $pipes, null, null, array('suppress_errors' => true));
         if (is_resource($process)) {
             $info = stream_get_contents($pipes[1]);
             fclose($pipes[1]);
